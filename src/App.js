@@ -1,8 +1,18 @@
+import React from "react";
+import {useEffect} from "react";
+
 import "./App.css"
+import image from "./Logo.png"
 
 function App() {
 
-    let ball = document.getElementById('ball');
+    return (
+        <>
+            <img src={image} id="block" alt="desc"></img>
+        </>
+    );
+
+    const ball = document.getElementById('block');
 
     ball.onmousedown = function(event) {
 
