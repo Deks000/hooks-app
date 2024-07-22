@@ -1,54 +1,39 @@
-import React from "react";
-import {useEffect} from "react";
+import React, {useEffect, useState} from "react";
 
 import "./App.css"
-import image from "./Logo.png"
+// import image from "./Logo.png"
 
 function App() {
 
-    return (
-        <>
-            <img src={image} id="block" alt="desc"></img>
-        </>
-    );
+    const [position, setPosition] = useState({ x: 0, y: 0 });
 
-    const ball = document.getElementById('block');
-
-    ball.onmousedown = function(event) {
-
-        let shiftX = event.clientX - ball.getBoundingClientRect().left;
-        let shiftY = event.clientY - ball.getBoundingClientRect().top;
-
-        ball.style.position = 'absolute';
-        ball.style.zIndex = 1000;
-        document.body.append(ball);
-
-        moveAt(event.pageX, event.pageY);
-
-        // переносит мяч на координаты (pageX, pageY),
-        // дополнительно учитывая изначальный сдвиг относительно указателя мыши
-        function moveAt(pageX, pageY) {
-            ball.style.left = pageX - shiftX + 'px';
-            ball.style.top = pageY - shiftY + 'px';
+    useEffect(() => {
+        function handleMove(e) {
+            setPosition({ x: e.clientX, y: e.clientY });
         }
-
-        function onMouseMove(event) {
-            moveAt(event.pageX, event.pageY);
-        }
-
-        // передвигаем мяч при событии mousemove
-        document.addEventListener('mousemove', onMouseMove);
-
-        // отпустить мяч, удалить ненужные обработчики
-        ball.onmouseup = function() {
-            document.removeEventListener('mousemove', onMouseMove);
-            ball.onmouseup = null;
+        window.addEventListener('pointermove', handleMove);
+        return () => {
+            window.removeEventListener('pointermove', handleMove);
         };
+    }, []);
 
-    };
 
-    ball.ondragstart = function() {
-        return false;
-    };
+    return (
+        <button
+            style={{
+            position: 'absolute',
+            backgroundColor: 'pink',
+            borderRadius: '50%',
+            opacity: 0.6,
+            transform: `translate(${position.x}px, ${position.y}px)`,
+            pointerEvents: 'none',
+            left: -20,
+            top: -20,
+            width: 40,
+            height: 40,
+        }} >
+            Hold
+        </button>
+    );
 }
 export default App;
