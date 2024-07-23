@@ -1,39 +1,43 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useReducer} from "react";
 
-import "./App.css"
-// import image from "./Logo.png"
+const initialState = {
+    count: 0,
+    step: 1,
+};
+
+function reducer(state, action) {
+    const { count, step } = state;
+    if (action.type === 'tick') {
+        return { count: count + step, step };
+    } else if (action.type === 'step') {
+        return { count, step: action.step };
+    } else {
+        throw new Error();
+    }
+}
 
 function App() {
 
-    const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const { count, step } = state;
 
     useEffect(() => {
-        function handleMove(e) {
-            setPosition({ x: e.clientX, y: e.clientY });
-        }
-        window.addEventListener('pointermove', handleMove);
-        return () => {
-            window.removeEventListener('pointermove', handleMove);
-        };
-    }, []);
-
+        const id = setInterval(() => {
+            dispatch({ type: 'tick' });
+        }, 1000);
+        return () => clearInterval(id);
+    }, [dispatch]);
 
     return (
-        <button
-            style={{
-            position: 'absolute',
-            backgroundColor: 'pink',
-            borderRadius: '50%',
-            opacity: 0.6,
-            transform: `translate(${position.x}px, ${position.y}px)`,
-            pointerEvents: 'none',
-            left: -20,
-            top: -20,
-            width: 40,
-            height: 40,
-        }} >
-            Hold
-        </button>
+        <>
+            <h1>{count}</h1>
+            <input value={step} onChange={e => {
+                dispatch({
+                    type: 'step',
+                    step: Number(e.target.value)
+                });
+            }} />
+        </>
     );
 }
 export default App;
