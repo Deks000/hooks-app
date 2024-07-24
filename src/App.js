@@ -42,11 +42,12 @@ function App() {
                 cursor: "grab",
                 zIndex: "1000",
                 backgroundColor: "burlywood",
-                border: "2px",
                 display: "flex",
                 textAlign: "center",
                 alignItems: "center",
-                justifyContent: "center"
+                justifyContent: "center",
+                border: "solid black 2px",
+                borderRadius: "15px",
             }}
             onMouseMove={ onMouseMove }
             onMouseDown={ () => setPressed(true) }
