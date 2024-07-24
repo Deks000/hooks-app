@@ -1,43 +1,58 @@
-import React, {useEffect, useReducer} from "react";
+import React, {useEffect, useRef, useState} from "react";
 
-const initialState = {
-    count: 0,
-    step: 1,
-};
-
-function reducer(state, action) {
-    const { count, step } = state;
-    if (action.type === 'tick') {
-        return { count: count + step, step };
-    } else if (action.type === 'step') {
-        return { count, step: action.step };
-    } else {
-        throw new Error();
-    }
-}
+// const quickAndDirtyStyle = {
+//     width: "200px",
+//     height: "200px",
+//     background: "#FF9900",
+//     color: "#FFFFFF",
+//     display: "flex",
+//     justifyContent: "center",
+//     alignItems: "center"
+// }
 
 function App() {
+    const [pressed, setPressed] = useState(false)
+    const [position, setPosition] = useState({x: 0, y: 0})
+    const ref = useRef()
 
-    const [state, dispatch] = useReducer(reducer, initialState);
-    const { count, step } = state;
-
+    // Monitor changes to position state and update DOM
     useEffect(() => {
-        const id = setInterval(() => {
-            dispatch({ type: 'tick' });
-        }, 1000);
-        return () => clearInterval(id);
-    }, [dispatch]);
+        if (ref.current) {
+            ref.current.style.transform = `translate(${position.x}px, ${position.y}px)`
+        }
+    }, [position])
+
+    // Update the current position if mouse is down
+    const onMouseMove = (event) => {
+        if (pressed) {
+            setPosition({
+                x: position.x + event.movementX,
+                y: position.y + event.movementY
+            })
+        }
+    }
 
     return (
-        <>
-            <h1>{count}</h1>
-            <input value={step} onChange={e => {
-                dispatch({
-                    type: 'step',
-                    step: Number(e.target.value)
-                });
-            }} />
-        </>
-    );
-}
+        <div
+            ref={ ref }
+            style={{
+                position: "absolute",
+                width: "400px",
+                height: "400px",
+                cursor: "grab",
+                zIndex: "1000",
+                backgroundColor: "burlywood",
+                border: "2px",
+                display: "flex",
+                textAlign: "center",
+                alignItems: "center",
+                justifyContent: "center"
+            }}
+            onMouseMove={ onMouseMove }
+            onMouseDown={ () => setPressed(true) }
+            onMouseUp={ () => setPressed(false) }>
+            <p>{ pressed ? "Dragging..." : "Press to drag" }</p>
+        </div>
+    )
+};
 export default App;
