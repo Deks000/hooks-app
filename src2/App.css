@@ -1,0 +1,14 @@
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+#okno {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  cursor: grab;
+  z-index: 1000;
+  background-color: burlywood;
+  border: 2px;
+}

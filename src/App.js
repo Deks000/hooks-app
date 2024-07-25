@@ -1,59 +1,28 @@
-import React, {useEffect, useRef, useState} from "react";
-
-// const quickAndDirtyStyle = {
-//     width: "200px",
-//     height: "200px",
-//     background: "#FF9900",
-//     color: "#FFFFFF",
-//     display: "flex",
-//     justifyContent: "center",
-//     alignItems: "center"
-// }
+import React from "react";
+import "./App.css"
+import IsFive from "./IsFive";
+import Count from "./Count";
 
 function App() {
-    const [pressed, setPressed] = useState(false)
-    const [position, setPosition] = useState({x: 0, y: 0})
-    const ref = useRef()
-
-    // Monitor changes to position state and update DOM
-    useEffect(() => {
-        if (ref.current) {
-            ref.current.style.transform = `translate(${position.x}px, ${position.y}px)`
-        }
-    }, [position])
-
-    // Update the current position if mouse is down
-    const onMouseMove = (event) => {
-        if (pressed) {
-            setPosition({
-                x: position.x + event.movementX,
-                y: position.y + event.movementY
-            })
-        }
-    }
+    const [count1, setCount1] = React.useState(0);
+    const [count2, setCount2] = React.useState(0);
 
     return (
-        <div
-            ref={ ref }
-            style={{
-                position: "absolute",
-                width: "400px",
-                height: "400px",
-                cursor: "grab",
-                zIndex: "1000",
-                backgroundColor: "burlywood",
-                display: "flex",
-                textAlign: "center",
-                alignItems: "center",
-                justifyContent: "center",
-                border: "solid black 2px",
-                borderRadius: "15px",
-            }}
-            onMouseMove={ onMouseMove }
-            onMouseDown={ () => setPressed(true) }
-            onMouseUp={ () => setPressed(false) }>
-            <p>{ pressed ? "Dragging..." : "Press to drag" }</p>
+        <div>
+            <h5> Счетчик 1: </h5>
+            <div>
+                <button onClick={() => setCount1(count1 + 1)}>+1</button>
+                <Count id={1} value={count1}/>
+            </div>
+
+            <h5> Счетчик 2: </h5>
+            <div>
+                <button onClick={() => setCount2(count2 + 1)}>+1</button>
+                <Count id={2} value={count2}/>
+                <IsFive value={count2}/>
+            </div>
+
         </div>
-    )
-};
+    );
+}
 export default App;
