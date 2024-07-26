@@ -6,11 +6,11 @@ const render = {
 };
 
 export default React.memo(function Count({id, value}){
-    console.warn(`Count${id} render: ${++render[`count${id}`]}`);
+    console.log(`Count${id} render: ${++render[`count${id}`]}`);
 
     return (
         <div>
-            <h1 className="cyan">{value}</h1>
+            <h1>{value}</h1>
         </div>
     );
 });

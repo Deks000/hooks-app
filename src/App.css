@@ -5,35 +5,41 @@
 
 #okno {
   position: absolute;
-  width: 400px;
-  height: 400px;
+  width: 100px;
+  height: 100px;
   cursor: grab;
   z-index: 1000;
   background-color: burlywood;
   border: 2px;
 }
 html{
-  background-color: #00425a;
-  color: aquamarine;
+  background-color: #5a462c;
 }
 
 button{
-  background-color: #003138;
-  color: aquamarine;
-  border: solid cadetblue 1px;
-  border-radius: 6px;
-  margin: 4px;
-  padding: 5px;
-}
-ul{
-  border: solid cadetblue 1px;
-  width: 200px;
-  height: 200px;
-  overflow:scroll;
-  overflow-x:hidden;
+  color: #004d35;
+  border: solid black 1px;
   border-radius: 6px;
   margin: 3px;
   padding: 5px;
-  position: relative;
-  background-color: #002c33;
+}
+
+.mainWindow {
+  z-index: 1;
+  overflow-x:hidden;
+}
+
+.window{
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  cursor: grab;
+  z-index: 1000;
+  background-color: burlywood;
+  display: flex;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  border: solid black 2px;
+  border-radius: 15px;
 }

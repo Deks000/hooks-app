@@ -1,28 +1,54 @@
-import React from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "./App.css"
-import IsFive from "./IsFive";
-import Count from "./Count";
 
 function App() {
-    const [count1, setCount1] = React.useState(0);
-    const [count2, setCount2] = React.useState(0);
+    const [windows, setWindows] = React.useState([1]);
+    const [pressed, setPressed] = useState(false)
+    const [position, setPosition] = useState({x: 0, y: 0})
+    const divWindowsRef = React.useRef();
+
+    // divWindowsRef.current = windows;
+
+    const addWindow = () => {
+        setWindows((prev) => [...prev, prev[prev.length - 1] + 1]);
+    };
+
+    // Monitor changes to position state and update DOM
+    useEffect(() => {
+        if (windows) {
+            windows.style.transform = `translate(${position.x}px, ${position.y}px)`
+        }
+    }, [position])
+
+    // Update the current position if mouse is down
+    const onMouseMove = (event) => {
+        if (pressed) {
+            setPosition({
+                x: position.x + event.movementX,
+                y: position.y + event.movementY
+            })
+        }
+    }
+
+    // const map1 = windows.map()
 
     return (
-        <div>
-            <h5> Счетчик 1: </h5>
-            <div>
-                <button onClick={() => setCount1(count1 + 1)}>+1</button>
-                <Count id={1} value={count1}/>
+        <>
+            <button onClick={addWindow}>Добавить окно</button>
+            <div className="mainWindow">
+                {
+                    windows.map((n) =>
+                    <div
+                        key={n}
+                        className="window"
+                        onMouseMove={ onMouseMove }
+                        onMouseDown={ () => setPressed(true) }
+                        onMouseUp={ () => setPressed(false) }>
+                        { pressed ? "Dragging..." : "Press to drag" }
+                    </div>)
+                }
             </div>
-
-            <h5> Счетчик 2: </h5>
-            <div>
-                <button onClick={() => setCount2(count2 + 1)}>+1</button>
-                <Count id={2} value={count2}/>
-                <IsFive value={count2}/>
-            </div>
-
-        </div>
-    );
+        </>
+    )
 }
 export default App;
