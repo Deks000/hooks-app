@@ -21,8 +21,6 @@ button{
 }
 
 .okno{
-  position: absolute;
-  z-index: 1000;
   width: 100px;
   height: 100px;
   cursor: grab;
